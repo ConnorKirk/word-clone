@@ -185,6 +185,38 @@ h1 {
   color: white;
 }
 
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: revert;
+}
+
+.keyboard-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 3px;
+  justify-content: center;
+}
+
+.keyboard-character {
+  margin: 0 6px 0 0;
+  height: 58px;
+  border-radius: 4px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  background-color: var(--key-b, #d3d6da);
+  color: var(--key-text-color);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: stretch;
+}
+
 .visually-hidden {
   position: absolute;
   overflow: hidden;

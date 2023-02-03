@@ -2,11 +2,12 @@ import React, { useState } from "react";
 
 import { range, sample } from "../../utils";
 import { WORDS } from "../../data";
-import { GuessInput } from "../GuessInput/GuessInput";
+import { GuessInput } from "../GuessInput";
 import { GuessResults } from "../GuessResults";
 import { NUM_OF_GUESSES_ALLOWED, STATE } from "../../constants";
 import { checkGuess } from "../../game-helpers";
-import { Banner } from "../Banner/Banner";
+import { Banner } from "../Banner";
+import { Keyboard } from "../Keyboard";
 
 // To make debugging easier, we'll log the solution in the console.
 
@@ -19,18 +20,27 @@ function Game() {
   );
   const [index, setIndex] = useState(0);
   const [state, setState] = useState();
+  const [seen, setSeen] = useState({});
 
   const addGuess = (guess) => {
     const next = [...guesses];
+    const status = checkGuess(guess, answer);
     next[index] = {
       label: guess,
       id: crypto.randomUUID(),
-      status: checkGuess(guess, answer),
+      status,
     };
     setGuesses(next);
 
     const nextIndex = index + 1;
     setIndex(nextIndex);
+    setSeen({
+      ...seen,
+      ...status.reduce((acc, { letter, status }) => {
+        acc[letter] = status;
+        return acc;
+      }, {}),
+    });
 
     if (guess === answer) {
       setState(STATE.WIN);
@@ -50,6 +60,7 @@ function Game() {
   return (
     <>
       <GuessResults guesses={guesses} />
+      <Keyboard seen={seen} />
       <GuessInput disabled={state === STATE.LOSE} addGuess={addGuess} />
       <Banner
         answer={answer}
