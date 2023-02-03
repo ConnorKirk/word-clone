@@ -6,20 +6,22 @@ export function checkGuess(guess, answer) {
   const guessChars = guess.toUpperCase().split('');
   const answerChars = answer.split('');
 
-  return guessChars.map((guessChar, index) => {
+  const ret = guessChars.map((guessChar, index) => {
     const answerChar = answerChars[index];
 
     let status;
     if (guessChar === answerChar) {
-      status = 'correct';
+      status = "correct";
     } else if (answerChars.includes(guessChar)) {
-      status = 'misplaced';
+      status = "misplaced";
     } else {
-      status = 'incorrect';
+      status = "incorrect";
     }
     return {
       letter: guessChar,
       status,
     };
   });
+
+  return ret;
 }
