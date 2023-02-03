@@ -6,7 +6,7 @@ import { GuessInput } from "../GuessInput";
 import { GuessResults } from "../GuessResults";
 import { NUM_OF_GUESSES_ALLOWED, STATE } from "../../constants";
 import { checkGuess } from "../../game-helpers";
-import { Banner } from "../Banner";
+import { HappyBanner, SadBanner } from "../Banner";
 import { Keyboard } from "../Keyboard";
 
 // To make debugging easier, we'll log the solution in the console.
@@ -44,6 +44,7 @@ function Game() {
 
     if (guess === answer) {
       setState(STATE.WIN);
+      return;
     }
     if (nextIndex >= NUM_OF_GUESSES_ALLOWED) {
       setState(STATE.LOSE);
@@ -55,6 +56,7 @@ function Game() {
     setGuesses(range(0, NUM_OF_GUESSES_ALLOWED, 1).map(() => ({})));
     setIndex(0);
     setState(STATE.ACTIVE);
+    setSeen({});
   };
 
   return (
@@ -62,12 +64,12 @@ function Game() {
       <GuessResults guesses={guesses} />
       <Keyboard seen={seen} />
       <GuessInput disabled={state === STATE.LOSE} addGuess={addGuess} />
-      <Banner
-        answer={answer}
-        state={state}
-        resetGame={resetGame}
-        attemptNum={index}
-      />
+      {state === STATE.WIN && (
+        <HappyBanner onClick={resetGame} attemptNum={index} />
+      )}
+      {state === STATE.LOSE && (
+        <SadBanner onClick={resetGame} answer={answer} />
+      )}
     </>
   );
 }

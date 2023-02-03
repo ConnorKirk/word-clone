@@ -1,37 +1,23 @@
-import { STATE } from "../../constants";
-
-export const Banner = ({ answer, state, resetGame, attemptNum }) => {
-  if (state === STATE.WIN)
-    return (
-      <HappyBanner attemptNum={attemptNum}>
-        <ResetButton onClick={resetGame} />
-      </HappyBanner>
-    );
-  if (state === STATE.LOSE)
-    return (
-      <SadBanner answer={answer}>
-        <ResetButton onClick={resetGame} />
-      </SadBanner>
-    );
-  return null;
-};
-
-const ResetButton = ({ onClick }) => <button onClick={onClick}>Reset</button>;
-
-const HappyBanner = ({ attemptNum, children }) => (
-  <div className="happy banner">
+export const HappyBanner = ({ attemptNum, onClick }) => (
+  <Banner type="happy">
     <p>
       <strong>Congratulations!</strong> Got it in <strong>{attemptNum}</strong>.
     </p>
-    {children}
-  </div>
+    <ResetButton onClick={onClick} />
+  </Banner>
 );
 
-const SadBanner = ({ answer, children }) => (
-  <div className="sad banner">
+export const SadBanner = ({ answer, onClick }) => (
+  <Banner type="sad">
     <p>
       Sorry, the correct answer is <strong>{answer}</strong>.
     </p>
-    {children}
-  </div>
+    <ResetButton onClick={onClick} />
+  </Banner>
 );
+
+const Banner = ({ type, children }) => (
+  <div className={`banner ${type}`}>{children}</div>
+);
+
+const ResetButton = ({ onClick }) => <button onClick={onClick}>Reset</button>;
